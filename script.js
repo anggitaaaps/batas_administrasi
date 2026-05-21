@@ -45,7 +45,7 @@ L.control.layers(baseMaps).addTo(map);
    MEMBACA GEOJSON
 ========================= */
 
-fetch('data/batas_adm.json')
+fetch('batas_adm.json')
 
 .then(function(response){
 
