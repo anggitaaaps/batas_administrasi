@@ -1,34 +1,155 @@
-<!DOCTYPE html>
-<html>
-<head>
+/* =========================
+   MEMBUAT PETA
+========================= */
 
-    <title>WebGIS Indonesia</title>
-
-    <meta charset="utf-8">
-
-    <meta name="viewport"
-    content="width=device-width, initial-scale=1.0">
-
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet"
-    href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-
-    <!-- CSS SENDIRI -->
-    <link rel="stylesheet" href="style.css">
-
-</head>
-
-<body>
-
-    <!-- DIV PETA -->
-    <div id="map"></div>
+var map = L.map('map', {
+    renderer: L.canvas()
+}).setView([-2, 118], 5);
 
 
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+/* =========================
+   BASEMAP
+========================= */
 
-    <!-- SCRIPT UTAMA -->
-    <script src="script.js"></script>
+/* OpenStreetMap */
+var osm = L.tileLayer(
+    'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+        attribution: '&copy; OpenStreetMap'
+    }
+).addTo(map);
 
-</body>
-</html>
+
+/* Satellite Esri */
+var satellite = L.tileLayer(
+    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    {
+        attribution: 'Tiles &copy; Esri'
+    }
+);
+
+
+/* =========================
+   LAYER CONTROL
+========================= */
+
+var baseMaps = {
+    "OpenStreetMap": osm,
+    "Satellite": satellite
+};
+
+L.control.layers(baseMaps).addTo(map);
+
+
+/* =========================
+   MEMBACA GEOJSON
+========================= */
+
+fetch('data/batas_adm.json')
+
+.then(function(response){
+
+    return response.json();
+
+})
+
+.then(function(data){
+
+    console.log("Jumlah Feature:", data.features.length);
+
+    console.log("Field:", data.features[0].properties);
+
+
+    /* =========================
+       LAYER GEOJSON
+    ========================= */
+
+    var batasAdm = L.geoJSON(data, {
+
+        /* Style Polygon */
+        style: function(feature){
+
+            return {
+
+                color: '#333',
+                weight: 1,
+                fillColor: '#87CEFA',
+                fillOpacity: 0.5
+
+            };
+
+        },
+
+
+        /* Popup */
+        onEachFeature: function(feature, layer){
+
+            var popupContent =
+
+                "<h3>Informasi Provinsi</h3>" +
+
+                "<table border='1' style='border-collapse:collapse; width:100%;'>" +
+
+                "<tr>" +
+                "<td><b>Provinsi</b></td>" +
+                "<td>" + (feature.properties.PROVINSI || "-") + "</td>" +
+                "</tr>" +
+
+                "</table>";
+
+            layer.bindPopup(popupContent);
+
+
+            /* Highlight saat mouse masuk */
+            layer.on({
+
+                mouseover: function(e){
+
+                    e.target.setStyle({
+
+                        weight: 2,
+                        color: 'yellow',
+                        fillOpacity: 0.7
+
+                    });
+
+                },
+
+                mouseout: function(e){
+
+                    batasAdm.resetStyle(e.target);
+
+                }
+
+            });
+
+        }
+
+    }).addTo(map);
+
+
+    /* =========================
+       ZOOM KE DATA
+    ========================= */
+
+    map.fitBounds(batasAdm.getBounds());
+
+})
+
+
+/* =========================
+   ERROR HANDLER
+========================= */
+
+.catch(function(error){
+
+    console.log("Error membaca GeoJSON:", error);
+
+});
+
+
+/* =========================
+   SCALE BAR
+========================= */
+
+L.control.scale().addTo(map);
