@@ -2,7 +2,7 @@
    MEMBACA GEOJSON
 ========================= */
 
-fetch('data/batas_adm.geojson')
+fetch('data/batas_adm.json')
 
 .then(function(response){
 
