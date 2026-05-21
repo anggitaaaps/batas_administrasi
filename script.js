@@ -1,105 +1,34 @@
-/* =========================
-   MEMBACA GEOJSON
-========================= */
+<!DOCTYPE html>
+<html>
+<head>
 
-fetch('data/batas_adm.json')
+    <title>WebGIS Indonesia</title>
 
-.then(function(response){
+    <meta charset="utf-8">
 
-    return response.json();
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
 
-})
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 
-.then(function(data){
+    <!-- CSS SENDIRI -->
+    <link rel="stylesheet" href="style.css">
 
-    console.log("Jumlah Feature:", data.features.length);
+</head>
 
-    console.log("Field:", data.features[0].properties);
+<body>
 
-
-    /* =========================
-       LAYER GEOJSON
-    ========================= */
-
-    var batasAdm = L.geoJSON(data, {
-
-        /* Style Polygon */
-        style: function(feature){
-
-            return {
-
-                color: '#333',
-                weight: 1,
-                fillColor: '#87CEFA',
-                fillOpacity: 0.5
-
-            };
-
-        },
+    <!-- DIV PETA -->
+    <div id="map"></div>
 
 
-        /* Popup */
-        onEachFeature: function(feature, layer){
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-            var popupContent =
+    <!-- SCRIPT UTAMA -->
+    <script src="script.js"></script>
 
-                "<h3>Informasi Provinsi</h3>" +
-
-                "<table border='1' style='border-collapse:collapse; width:100%;'>" +
-
-                "<tr>" +
-                "<td><b>Provinsi</b></td>" +
-                "<td>" + (feature.properties.PROVINSI || "-") + "</td>" +
-                "</tr>" +
-
-                "</table>";
-
-            layer.bindPopup(popupContent);
-
-
-            /* Highlight saat mouse masuk */
-            layer.on({
-
-                mouseover: function(e){
-
-                    e.target.setStyle({
-
-                        weight: 2,
-                        color: 'yellow',
-                        fillOpacity: 0.7
-
-                    });
-
-                },
-
-                mouseout: function(e){
-
-                    batasAdm.resetStyle(e.target);
-
-                }
-
-            });
-
-        }
-
-    }).addTo(map);
-
-
-    /* =========================
-       ZOOM KE DATA
-    ========================= */
-
-    map.fitBounds(batasAdm.getBounds());
-
-})
-
-
-/* =========================
-   ERROR HANDLER
-========================= */
-
-.catch(function(error){
-
-    console.log("Error membaca GeoJSON:", error);
-
-});
+</body>
+</html>
