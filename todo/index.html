@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List App - Kelola Tugas Harianmu</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1><i class="fas fa-check-circle"></i> TodoList</h1>
+            <p class="subtitle">Kelola tugas harianmu dengan mudah</p>
+        </div>
+
+        <!-- Input Section -->
+        <div class="input-section">
+            <div class="input-wrapper">
+                <input 
+                    type="text" 
+                    id="todoInput" 
+                    placeholder="Tambahkan tugas baru... (max 200 karakter)"
+                    maxlength="200"
+                    autocomplete="off"
+                >
+                <button class="add-btn" id="addBtn">
+                    <i class="fas fa-plus"></i> Tambah
+                </button>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">
+                    <i class="fas fa-list"></i> Semua
+                </button>
+                <button class="filter-btn" data-filter="active">
+                    <i class="fas fa-hourglass-half"></i> Aktif
+                </button>
+                <button class="filter-btn" data-filter="completed">
+                    <i class="fas fa-check"></i> Selesai
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <div class="stat">
+                <span class="stat-label">Total</span>
+                <span class="stat-number" id="totalCount">0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Aktif</span>
+                <span class="stat-number active" id="activeCount">0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Selesai</span>
+                <span class="stat-number completed" id="completedCount">0</span>
+            </div>
+        </div>
+
+        <!-- Todo Section -->
+        <div class="todo-section">
+            <ul class="todo-list" id="todoList"></ul>
+            <div class="empty-state show" id="emptyState">
+                <i class="fas fa-inbox"></i>
+                <p>Belum ada tugas. Mulai dengan menambahkan tugas baru!</p>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="clear-btn" id="clearCompletedBtn" style="display: none;">
+                <i class="fas fa-trash"></i> Hapus Selesai
+            </button>
+            <button class="clear-all-btn" id="clearAllBtn">
+                <i class="fas fa-broom"></i> Hapus Semua
+            </button>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>✨ Dibuat dengan HTML, CSS & JavaScript Vanilla</p>
+            <p class="footer-small">Semua data disimpan di Local Storage - Tidak ada internet yang diperlukan</p>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
