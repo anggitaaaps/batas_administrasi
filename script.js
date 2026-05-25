@@ -40,7 +40,6 @@ var baseMaps = {
 
 L.control.layers(baseMaps).addTo(map);
 
-
 /* =========================
    MEMBACA GEOJSON
 ========================= */
@@ -58,7 +57,6 @@ fetch('batas_adm.json')
     console.log("Jumlah Feature:", data.features.length);
 
     console.log("Field:", data.features[0].properties);
-
 
     /* =========================
        LAYER GEOJSON
@@ -79,7 +77,6 @@ fetch('batas_adm.json')
             };
 
         },
-
 
         /* Popup */
         onEachFeature: function(feature, layer){
@@ -122,7 +119,6 @@ fetch('batas_adm.json')
                 }
 
             });
-
         }
 
     }).addTo(map);
@@ -153,3 +149,23 @@ fetch('batas_adm.json')
 ========================= */
 
 L.control.scale().addTo(map);
+
+/* =========================
+   LEGENDA
+========================= */
+
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend');
+
+    div.innerHTML +=
+        "<h4>Legenda</h4>" +
+        "<i style='background:#87CEFA; width:18px; height:18px; float:left; margin-right:8px; opacity:0.7;'></i>" +
+        "<span>Batas Administrasi Provinsi</span><br>";
+
+    return div;
+};
+
+legend.addTo(map);
