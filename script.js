@@ -6,7 +6,6 @@ var map = L.map('map', {
     renderer: L.canvas()
 }).setView([-2, 118], 5);
 
-
 /* =========================
    BASEMAP
 ========================= */
@@ -169,3 +168,49 @@ legend.onAdd = function (map) {
 };
 
 legend.addTo(map);
+
+/* =========================
+   SEARCH PROVINSI
+========================= */
+
+var searchControl = new L.Control.Search({
+    layer: batasAdm,
+    propertyName: 'PROVINSI',
+    marker: false,
+    moveToLocation: function(latlng, title, map) {
+        map.setView(latlng, 7);
+    }
+});
+
+map.addControl(searchControl);
+
+/* =========================
+   KOORDINAT CURSOR
+========================= */
+
+var koordinat = L.control({position: 'bottomleft'});
+
+koordinat.onAdd = function(map){
+
+    this._div = L.DomUtil.create('div', 'info koordinat');
+    this.update();
+    return this._div;
+
+};
+
+koordinat.update = function(latlng){
+
+    this._div.innerHTML = latlng
+        ? 'Lat: ' + latlng.lat.toFixed(5) +
+          '<br>Lng: ' + latlng.lng.toFixed(5)
+        : 'Arahkan cursor ke peta';
+
+};
+
+koordinat.addTo(map);
+
+map.on('mousemove', function(e){
+
+    koordinat.update(e.latlng);
+
+});
